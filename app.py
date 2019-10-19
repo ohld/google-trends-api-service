@@ -23,6 +23,9 @@ def get_trend(trend):
         year_end=today.year, month_end=today.month, day_end=today.day, hour_end=today.hour, 
         cat=0, geo='', gprop='', sleep=0
     )
+    # Remove duplicates
+    data = data.loc[~data.index.duplicated(keep='first')]
+    
     return Response(data[trend].to_json(), mimetype="text/json")
 
 if __name__ == '__main__':

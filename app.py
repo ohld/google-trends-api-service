@@ -1,6 +1,6 @@
 import datetime
 from pytrends.request import TrendReq
-from flask import Flask, jsonify
+from flask import Flask, jsonify, Response
 
 # create the application object
 app = Flask(__name__)
@@ -19,12 +19,11 @@ def get_trend(trend):
 
     data = pytrends.get_historical_interest(
         [trend], 
-        year_start=week_before.year, month_start=week_before.month, day_start=week_before.day, hour_start=0, 
-        year_end=today.year, month_end=today.month, day_end=today.day, hour_end=0, 
+        year_start=week_before.year, month_start=week_before.month, day_start=week_before.day, hour_start=week_before.hour, 
+        year_end=today.year, month_end=today.month, day_end=today.day, hour_end=today.hour, 
         cat=0, geo='', gprop='', sleep=0
     )
-
-    return jsonify(data[trend].to_json())
+    return Response(data[trend].to_json(), mimetype="text/json")
 
 if __name__ == '__main__':
     app.run(debug=True)
